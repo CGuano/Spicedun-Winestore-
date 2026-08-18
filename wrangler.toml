@@ -6,4 +6,4 @@ compatibility_date = "2026-08-01"
 # Cloudflare dashboard > Storage & Databases > KV > your namespace > copy the ID.
 [[kv_namespaces]]
 binding = "STORE"
-id = "PASTE_YOUR_KV_NAMESPACE_ID_HERE"
+id = "765b96d8efa34697927c5d2245614c0c"
