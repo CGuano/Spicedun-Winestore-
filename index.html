@@ -232,26 +232,45 @@ function dayChart() {
   const byDay = {};
   state.log.forEach(e => {
     const k = new Date(e.ts).toISOString().slice(0,10);
-    byDay[k] = (byDay[k]||0) + 1;
+    byDay[k] = byDay[k] || {};
+    byDay[k][e.wine] = (byDay[k][e.wine] || 0) + 1;
   });
   const days = Object.keys(byDay).sort();
   if (!days.length) return '<p style="color:var(--paperDim);font-size:14px">Nothing logged yet. The chart fills in as bottles go.</p>';
-  const max = Math.max(...days.map(d=>byDay[d]));
+
+  const totals = days.map(d => Object.values(byDay[d]).reduce((a,b)=>a+b,0));
+  const max = Math.max(...totals);
   const W = 320, H = 120, pad = 6;
   const slot = (W - pad*2) / days.length;
   const bw = Math.min(46, slot - 8);
+
   let s = `<svg viewBox="0 0 ${W} ${H+26}" width="100%" style="display:block">`;
   days.forEach((d,i) => {
     const x = pad + i*slot + 4;
-    const h = (byDay[d]/max) * H;
+    let y = H;
+    WINES.forEach(w => {
+      const n = byDay[d][w.id] || 0;
+      if (!n) return;
+      const h = (n/max) * H;
+      y -= h;
+      s += `<rect x="${x}" y="${y}" width="${bw}" height="${h}" fill="${w.swatch}"/>`;
+    });
     const lbl = new Date(d+"T12:00:00").toLocaleDateString("en-GB",{weekday:"short"});
-    s += `<rect x="${x}" y="${H-h}" width="${bw}" height="${h}" fill="var(--gorse)" rx="1"/>`;
-    s += `<text x="${x+bw/2}" y="${H-h-5}" text-anchor="middle" fill="var(--paper)" font-size="11" font-family="'Space Mono',monospace">${byDay[d]}</text>`;
+    s += `<text x="${x+bw/2}" y="${y-5}" text-anchor="middle" fill="var(--paper)" font-size="11" font-family="'Space Mono',monospace">${totals[i]}</text>`;
     s += `<text x="${x+bw/2}" y="${H+16}" text-anchor="middle" fill="var(--paperDim)" font-size="10" font-family="'Space Mono',monospace">${lbl}</text>`;
   });
   s += `<line x1="0" y1="${H}" x2="${W}" y2="${H}" stroke="var(--paperDim)" stroke-width="1" opacity=".4"/></svg>`;
+
+  const SHORT = { pg:"Canaletto", br:"Brancott", vf:"Vieille Ferme", cm:"Cloud Mountain", mg:"McGuigan" };
+  s += '<div class="row wrap" style="gap:10px;margin-top:10px">' + WINES.map(w =>
+    `<span class="row center" style="gap:5px;font-size:11px;color:var(--paperDim)">
+      <span style="width:8px;height:8px;border-radius:8px;background:${w.swatch};display:inline-block"></span>
+      ${SHORT[w.id]}
+    </span>`).join("") + '</div>';
+
   return s;
 }
+
 
 /* ---------------- views ---------------- */
 function shopView() {
