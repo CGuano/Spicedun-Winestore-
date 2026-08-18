@@ -1,0 +1,9 @@
+name = "spicedun-api"
+main = "worker.js"
+compatibility_date = "2026-08-01"
+
+# Paste your KV namespace ID between the quotes below.
+# Cloudflare dashboard > Storage & Databases > KV > your namespace > copy the ID.
+[[kv_namespaces]]
+binding = "STORE"
+id = "PASTE_YOUR_KV_NAMESPACE_ID_HERE"
