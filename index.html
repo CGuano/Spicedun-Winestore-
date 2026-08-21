@@ -98,10 +98,11 @@ const API = "https://api.spicedunwines.party";
 
 const WINES = [
   { id:"pg", name:"Canaletto Pinot Grigio",    type:"White", price:6.00, stock:18, swatch:"#D9C87A" },
-  { id:"br", name:"Brancott Sauvignon Blanc",  type:"White", price:7.00, stock:12, swatch:"#C6D08A" },
+  { id:"br", name:"Brancott Sauvignon Blanc",  type:"White", price:7.00, stock:24, swatch:"#C6D08A" },
   { id:"vf", name:"La Vieille Ferme Rosé",     type:"Rosé",  price:7.00, stock:12, swatch:"#E0A090" },
   { id:"cm", name:"Cloud Mountain Sauv Blanc", type:"White", price:6.50, stock:12, swatch:"#AFC9B4" },
   { id:"mg", name:"McGuigan Black Label Rosé", type:"Rosé",  price:5.00, stock:36, swatch:"#D08A86" },
+  { id:"zn", name:"Zinfandel Rosé",            type:"Rosé",  price:6.00, stock:12, swatch:"#DE8FA0" },
 ];
 
 const TOTAL_BOTTLES = WINES.reduce((s,w)=>s+w.stock,0);
